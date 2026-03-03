@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const { generateToken, authenticateToken } = require('./controller/controllerAuth');
 
 const mongoString = process.env.DATABASE_URL;
 
@@ -32,8 +33,11 @@ app.use(cors({
     methods: '*'
 }));
 
+//auth route
+app.post('/auth/token', generateToken);
+
 //route
-app.use('/api', require('./route/routerUser'));
+app.use('/api', authenticateToken, require('./route/routerUser'));
 
 //start the app
 app.listen(3008, () => console.log(`UTN API service listening on port 3008!`))
