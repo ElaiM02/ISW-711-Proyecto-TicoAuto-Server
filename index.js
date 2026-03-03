@@ -25,5 +25,15 @@ database.once('connected', () => {
 
 const app = express();
 
+//middlewares
+app.use(bodyParser.json());
+app.use(cors({
+    domains: '*',
+    methods: '*'
+}));
+
+//route
+app.use('/api', require('./route/routerUser'));
+
 //start the app
 app.listen(3008, () => console.log(`UTN API service listening on port 3008!`))
