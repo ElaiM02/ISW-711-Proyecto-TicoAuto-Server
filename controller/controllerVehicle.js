@@ -74,11 +74,35 @@ const getVehicleById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// UPDATE VEHICLE
+const updateVehicle = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json(vehicle);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
+// DELETE VEHICLE
+const deleteVehicle = async (req, res) => {
+  try {
+    await Vehicle.findByIdAndDelete(req.params.id);
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 
 module.exports = {
   createVehicle,
   getVehicles,
   getVehicleById,
+  updateVehicle,
+  deleteVehicle
 };
