@@ -4,7 +4,12 @@ const Vehicle = require('../models/vehicle');
 const createVehicle = async (req, res) => {
   try {
     const vehicle = await Vehicle.create(req.body);
-    res.status(201).json(vehicle);
+
+    res.status(201).json({
+      message: "Vehículo creado",
+      data: vehicle
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -56,33 +61,42 @@ const getVehicles = async (req, res) => {
       totalPages: Math.ceil(total / limit),
       data: vehicles
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// GET VEHICLE
+// GET VEHICLE BY ID
 const getVehicleById = async (req, res) => {
   try {
+
     const vehicle = await Vehicle.findById(req.params.id)
       .populate('owner', 'name');
 
-    if (!vehicle) return res.status(404).json();
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehículo no encontrado" });
+    }
 
     res.json(vehicle);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 // UPDATE VEHICLE
 const updateVehicle = async (req, res) => {
   try {
+
     const vehicle = await Vehicle.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
     );
+
     res.json(vehicle);
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -91,13 +105,15 @@ const updateVehicle = async (req, res) => {
 // DELETE VEHICLE
 const deleteVehicle = async (req, res) => {
   try {
+
     await Vehicle.findByIdAndDelete(req.params.id);
-    res.status(204).json();
+
+    res.status(204).send();
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
-
+};
 
 module.exports = {
   createVehicle,
