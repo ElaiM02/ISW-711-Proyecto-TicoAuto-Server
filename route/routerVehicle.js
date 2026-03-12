@@ -2,16 +2,12 @@ const express = require('express');
 const router = express.Router();
 const vehicleController = require('../controller/controllerVehicle');
 
-// CREAR VEHICULO
-router.post('/', vehicleController.createVehicle);
+router.post('/vehicle', vehicleController.createVehicle);
 
-// OBTENER VEHICULOS
-router.get('/', vehicleController.getVehicles);
+router.get('/vehicle', vehicleController.getVehicles);
 
-// ACTUALIZAR
-router.put('/:id', vehicleController.updateVehicle);
+router.patch('/vehicle/:id', vehicleController.updateVehicle);
 
-// ELIMINAR
-router.delete('/:id', vehicleController.deleteVehicle);
+router.delete('/vehicle/:id', vehicleController.deleteVehicle);
 
 module.exports = router;
