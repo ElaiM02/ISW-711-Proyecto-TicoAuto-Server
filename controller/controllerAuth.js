@@ -1,5 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const generateToken = async (req, res) => {
     const { email, password } = req.body;
@@ -21,12 +24,11 @@ const generateToken = async (req, res) => {
             return res.status(401).json();
         }
 
-        const token = await bcrypt.hash(email + password, 10);
+        const payload = { userId: user._id, email: user.email };
 
-        user.token = token;
-        await user.save();
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
-        return res.status(201).json({ token: user.token });
+        return res.status(201).json({ token });
     } catch (error) {
         console.error(error);
         return res.status(500).json();
@@ -42,21 +44,18 @@ const authenticateToken = async (req, res, next) => {
     }
 
     try {
-        const user = await User.findOne({ token });
 
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid or expired token' });
-        }
+        const payload = jwt.verify(token, JWT_SECRET);
 
+        const user = await User.findById(payload.userId);
         req.user = user;
         next();
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Error authenticating token' });
+                console.error("JWT ERROR:", error);
+
+        return res.status(403).json({ message: 'Invalid or expired token' });
     }
 };
-
-
 
 module.exports = {
     generateToken,
