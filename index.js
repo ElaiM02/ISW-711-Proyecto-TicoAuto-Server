@@ -38,7 +38,7 @@ app.post('/auth/token', generateToken);
 
 //route
 app.use('/api', authenticateToken, require('./route/routerUser'));
-app.use('/api', authenticateToken, require('./route/routerVehicle'));
+app.use('/api', require('./route/routerVehicle'));
 
 //start the app
 app.listen(3008, () => console.log(`UTN API service listening on port 3008!`))
