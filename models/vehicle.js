@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 
 const vehicleSchema = new mongoose.Schema({
-  brand: { type: String, required: true },      // Marca
-  model: { type: String, required: true },      // Modelo
-  year: { type: Number, required: true },       // Año
-  price: { type: Number, required: true },      // Precio
+  brand: { type: String, required: true },
+  model: { type: String, required: true },
+  year: { type: Number, required: true },
+  price: { type: Number, required: true },
+  //description: { type: String, maxlength: 500 },
+  //images: [{ type: String }], 
   status: { 
     type: String, 
     enum: ['available', 'sold'], 
