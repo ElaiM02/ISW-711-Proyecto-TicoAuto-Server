@@ -1,6 +1,5 @@
 const Vehicle = require('../models/vehicle');
 
-// CREATE VEHICLE
 const createVehicle = async (req, res) => {
   try {
     const vehicle = await Vehicle.create(req.body);
@@ -15,7 +14,6 @@ const createVehicle = async (req, res) => {
   }
 };
 
-// GET VEHICLES
 const getVehicles = async (req, res) => {
   try {
     const {
@@ -67,7 +65,6 @@ const getVehicles = async (req, res) => {
   }
 };
 
-// GET VEHICLE BY ID
 const getVehicleById = async (req, res) => {
   try {
 
@@ -85,24 +82,22 @@ const getVehicleById = async (req, res) => {
   }
 };
 
-// UPDATE VEHICLE
 const updateVehicle = async (req, res) => {
   try {
 
     const vehicle = await Vehicle.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
-    res.json(vehicle);
+    res.status(200).json(vehicle);
 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// DELETE VEHICLE
 const deleteVehicle = async (req, res) => {
   try {
 

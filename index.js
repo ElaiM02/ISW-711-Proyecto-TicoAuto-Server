@@ -36,8 +36,9 @@ app.use(cors({
 //AUTH ROUTE
 app.post('/auth/token', generateToken);
 
-//USER ROUTES
-app.use('/api/users', require('./route/routerUser'));
+//route
+app.use('/api', authenticateToken, require('./route/routerUser'));
+app.use('/api', require('./route/routerVehicle'));
 
 //VEHICLE ROUTES  ← ESTA ES LA QUE FALTABA
 app.use('/api/vehicles', require('./route/routerVehicle'));
