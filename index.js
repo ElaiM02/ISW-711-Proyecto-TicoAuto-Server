@@ -7,14 +7,15 @@ const express = require('express');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const { generateToken, authenticateToken } = require('./controller/controllerAuth');
+
+const { generateToken } = require('./controller/controllerAuth');
 
 const mongoString = process.env.DATABASE_URL;
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
-
+//Database status
 database.on('error', (error) => {
     console.log(error)
 });
@@ -23,21 +24,26 @@ database.once('connected', () => {
     console.log('Database Connected');
 });
 
-
 const app = express();
 
 //middlewares
 app.use(bodyParser.json());
 app.use(cors({
-    domains: '*',
+    origin: '*',
     methods: '*'
 }));
 
-//auth route
+//AUTH ROUTE
 app.post('/auth/token', generateToken);
 
-//route
-app.use('/api', authenticateToken, require('./route/routerUser'));
+//USER ROUTES
+app.use('/api/users', require('./route/routerUser'));
 
-//start the app
-app.listen(3008, () => console.log(`UTN API service listening on port 3008!`))
+//VEHICLE ROUTES  ← ESTA ES LA QUE FALTABA
+app.use('/api/vehicles', require('./route/routerVehicle'));
+
+
+//START SERVER
+app.listen(3008, () => {
+    console.log('UTN API service listening on port 3008!');
+});
