@@ -1,8 +1,17 @@
 const Vehicle = require('../models/vehicle');
-
 const createVehicle = async (req, res) => {
   try {
-    const vehicle = await Vehicle.create(req.body);
+
+    const vehicleData = {
+      brand: req.body.brand,
+      model: req.body.model,
+      year: req.body.year,
+      price: req.body.price,
+     description: req.body.description,
+      image: req.file ? req.file.filename : null 
+    };
+
+    const vehicle = await Vehicle.create(vehicleData);
 
     res.status(201).json({
       message: "Vehículo creado",
