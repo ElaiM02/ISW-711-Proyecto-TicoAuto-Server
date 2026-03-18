@@ -8,7 +8,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
-const { generateToken } = require('./controller/controllerAuth');
+const { generateToken, authenticateToken } = require('./controller/controllerAuth');
 
 const mongoString = process.env.DATABASE_URL;
 
@@ -33,18 +33,25 @@ app.use(cors({
     methods: '*'
 }));
 
+ app.use('/upload', express.static('upload'));
+  
+
 //AUTH ROUTE
 app.post('/auth/token', generateToken);
 
 //route
-app.use('/api', authenticateToken, require('./route/routerUser'));
+app.use('/api', require('./route/routerUser'));
 app.use('/api', require('./route/routerVehicle'));
 
-//VEHICLE ROUTES  ← ESTA ES LA QUE FALTABA
+//VEHICLE ROUTES  
 app.use('/api/vehicles', require('./route/routerVehicle'));
 
 
 //START SERVER
 app.listen(3008, () => {
     console.log('UTN API service listening on port 3008!');
+
+
+
+  
 });
