@@ -15,7 +15,6 @@ const mongoString = process.env.DATABASE_URL;
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
-//Database status
 database.on('error', (error) => {
     console.log(error)
 });
@@ -35,23 +34,12 @@ app.use(cors({
 
  app.use('/upload', express.static('upload'));
   
-
-//AUTH ROUTE
+//auth route
 app.post('/auth/token', generateToken);
 
 //route
 app.use('/api', require('./route/routerUser'));
 app.use('/api', require('./route/routerVehicle'));
 
-//VEHICLE ROUTES  
-app.use('/api/vehicles', require('./route/routerVehicle'));
-
-
-//START SERVER
-app.listen(3008, () => {
-    console.log('UTN API service listening on port 3008!');
-
-
-
-  
-});
+//start the app
+app.listen(3008, () => console.log('UTN API service listening on port 3008!'));
