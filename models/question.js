@@ -15,7 +15,13 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    answer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Answer',
+        default: null
     }
+
     }, {
         timestamps: true
     }
